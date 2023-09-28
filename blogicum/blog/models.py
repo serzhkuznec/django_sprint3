@@ -1,12 +1,33 @@
 from django.db import models
+
 from django.contrib.auth import get_user_model
-from core.models import PublishedModel
 
 User = get_user_model()
 
+str_lenght = 256
+
+
+class PublishedModel(models.Model):
+    is_published = models.BooleanField(
+        default=True,
+        verbose_name='Опубликовано',
+        help_text='Снимите галочку, '
+        'чтобы скрыть публикацию.'
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Добавлено'
+    )
+
+    class Meta:
+        abstract = True
+
 
 class Category(PublishedModel):
-    title = models.CharField(max_length=256, verbose_name='Заголовок')
+    title = models.CharField(
+        max_length=str_lenght,
+        verbose_name='Заголовок'
+    )
     description = models.TextField(verbose_name='Описание')
     slug = models.SlugField(
         unique=True,
@@ -24,7 +45,10 @@ class Category(PublishedModel):
 
 
 class Location(PublishedModel):
-    name = models.CharField(max_length=256, verbose_name='Название места')
+    name = models.CharField(
+        max_length=str_lenght,
+        verbose_name='Название места'
+    )
 
     class Meta:
         verbose_name = 'местоположение'
@@ -35,7 +59,10 @@ class Location(PublishedModel):
 
 
 class Post(PublishedModel):
-    title = models.CharField(max_length=256, verbose_name='Заголовок')
+    title = models.CharField(
+        max_length=str_lenght,
+        verbose_name='Заголовок'
+    )
     text = models.TextField(verbose_name='Текст')
     pub_date = models.DateTimeField(
         verbose_name='Дата и время публикации',
@@ -43,19 +70,27 @@ class Post(PublishedModel):
                    'можно делать отложенные публикации.'))
     author = models.ForeignKey(
         User,
+        related_name="%(app_label)s_%(class)s_related",
+        related_query_name="%(app_label)s_%(class)ss",
         on_delete=models.CASCADE, verbose_name='Автор публикации')
     location = models.ForeignKey(
         Location,
+        related_name="%(app_label)s_%(class)s_related",
+        related_query_name="%(app_label)s_%(class)ss",
+        blank=False,
         on_delete=models.SET_NULL,
         null=True, verbose_name='Местоположение')
     category = models.ForeignKey(
         Category,
+        related_name="%(app_label)s_%(class)s_related",
+        related_query_name="%(app_label)s_%(class)ss",
         on_delete=models.SET_NULL,
         null=True, verbose_name='Категория')
 
     class Meta:
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
+        get_latest_by = "order_date"
 
     def __str__(self):
         return self.title
