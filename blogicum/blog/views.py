@@ -9,13 +9,12 @@ NUMBER_OF_POSTS = 5
 
 def get_post_object():
     return Post.objects.select_related(
-               'author',
-               'location',
-               'category').filter(
-                   is_published=True,
-                   category__is_published=True,
-                   pub_date__lte=timezone.now()
-           )
+        'author',
+        'location',
+        'category').filter(
+            is_published=True,
+            category__is_published=True,
+            pub_date__lte=timezone.now())
 
 
 def post_detail(request, post_id):
