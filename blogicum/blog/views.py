@@ -1,4 +1,4 @@
-import datetime
+from django.utils import timezone
 
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 
@@ -14,7 +14,7 @@ def get_post_object():
                'category').filter(
                    is_published=True,
                    category__is_published=True,
-                   pub_date__date__lt=datetime.datetime.now()
+                   pub_date__lte=timezone.now()
                 )
 
 def post_detail(request, post_id):
@@ -42,10 +42,10 @@ def index(request):
 
 def category_posts(request, category_slug):
     template = 'blog/category.html'
-    category_slug = get_object_or_404(Category.objects.get(slug=category_slug)),
+    category_post = get_object_or_404(Category, slug=category_slug, is_published= True)
     category_page_post = get_post_object().filter(category__slug=category_slug)
     context = {
-        'category': category_slug,
+        'category': category_post,
         'post_list': category_page_post
     }
     return render(request, template, context)
