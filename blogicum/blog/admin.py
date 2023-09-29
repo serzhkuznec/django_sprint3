@@ -7,7 +7,7 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ("title", "description")
     list_filter = ("slug",)
     search_fields = ("title", "description", )
-    
+
 
 class LoctationAdmin(admin.ModelAdmin):
     pass
@@ -16,8 +16,8 @@ class LoctationAdmin(admin.ModelAdmin):
 class PostAdmin(admin.ModelAdmin):
     list_display = ("title", "author", "location")
     list_filter = ("author",)
-    
-    
+
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Location, LoctationAdmin)
 admin.site.register(Post, PostAdmin)
