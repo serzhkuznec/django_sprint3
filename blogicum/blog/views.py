@@ -21,8 +21,8 @@ def get_post_object():
 def post_detail(request, post_id):
     template = 'blog/detail.html'
     post = get_object_or_404(
-               get_post_object(),
-               pk=post_id)
+        get_post_object(),
+        pk=post_id)
     context = {'post': post}
     return render(request, template, context)
 
