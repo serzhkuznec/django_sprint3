@@ -37,11 +37,10 @@ def index(request):
 def category_posts(request, category_slug):
     template = 'blog/category.html'
     category_post = get_object_or_404(
-                        Category, slug=category_slug,
-                        is_published=True
-                    )
+        Category, slug=category_slug,
+        is_published=True
+    )
     category_page_post = get_post_object().filter(category__slug=category_slug)
-    context = {
-              'category': category_post,
-              'post_list': category_page_post}
+    context = {'category': category_post,
+               'post_list': category_page_post}
     return render(request, template, context)
