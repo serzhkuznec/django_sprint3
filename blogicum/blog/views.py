@@ -22,22 +22,15 @@ def post_detail(request, post_id):
     template = 'blog/detail.html'
     post = get_object_or_404(
                get_post_object(),
-               pk=post_id
-           )
-    context = {
-        'post': post
-    }
+               pk=post_id)
+    context = {'post': post}
     return render(request, template, context)
 
 
 def index(request):
     template = 'blog/index.html'
-    post_list = (
-       get_post_object()[:NUMBER_OF_POSTS]
-    )
-    context = {
-        'post_list': post_list
-    }
+    post_list = (get_post_object()[:NUMBER_OF_POSTS])
+    context = {'post_list': post_list}
     return render(request, template, context)
 
 
@@ -49,7 +42,6 @@ def category_posts(request, category_slug):
                     )
     category_page_post = get_post_object().filter(category__slug=category_slug)
     context = {
-        'category': category_post,
-        'post_list': category_page_post
-    }
+              'category': category_post,
+              'post_list': category_page_post}
     return render(request, template, context)
