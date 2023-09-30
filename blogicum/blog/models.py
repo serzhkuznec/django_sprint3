@@ -24,7 +24,7 @@ class PublishedModel(models.Model):
 
 class Category(PublishedModel):
     title = models.CharField(
-        MAX_HEADER_LENGHT=MAX_HEADER_LENGHT,
+        max_length=MAX_HEADER_LENGHT,
         verbose_name='Заголовок'
     )
     description = models.TextField(verbose_name='Описание')
