@@ -35,10 +35,9 @@ def category_posts(request, category_slug):
         Category, slug=category_slug,
         is_published=True
     )
-    category_page_posts = get_base_quesryset(
-        ).filter(
-            category__slug=category_slug
-        )
+    category_page_posts = get_base_quesryset().filter(
+        category__slug=category_slug
+    )
     return render(
         request, 'blog/category.html',
         {'category': category,
