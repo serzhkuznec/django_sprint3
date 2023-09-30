@@ -1,10 +1,9 @@
-from django.db import models
-
 from django.contrib.auth import get_user_model
+from django.db import models
 
 User = get_user_model()
 
-str_lenght = 256
+MAX_HEADER_LENGHT = 256
 
 
 class PublishedModel(models.Model):
@@ -25,7 +24,7 @@ class PublishedModel(models.Model):
 
 class Category(PublishedModel):
     title = models.CharField(
-        max_length=str_lenght,
+        MAX_HEADER_LENGHT=MAX_HEADER_LENGHT,
         verbose_name='Заголовок'
     )
     description = models.TextField(verbose_name='Описание')
@@ -46,7 +45,7 @@ class Category(PublishedModel):
 
 class Location(PublishedModel):
     name = models.CharField(
-        max_length=str_lenght,
+        max_length=MAX_HEADER_LENGHT,
         verbose_name='Название места'
     )
 
@@ -60,7 +59,7 @@ class Location(PublishedModel):
 
 class Post(PublishedModel):
     title = models.CharField(
-        max_length=str_lenght,
+        max_length=MAX_HEADER_LENGHT,
         verbose_name='Заголовок'
     )
     text = models.TextField(verbose_name='Текст')
@@ -70,27 +69,24 @@ class Post(PublishedModel):
                    'можно делать отложенные публикации.'))
     author = models.ForeignKey(
         User,
-        related_name="%(app_label)s_%(class)s_related",
-        related_query_name="%(app_label)s_%(class)ss",
+        related_name="posts",
         on_delete=models.CASCADE, verbose_name='Автор публикации')
     location = models.ForeignKey(
         Location,
-        related_name="%(app_label)s_%(class)s_related",
-        related_query_name="%(app_label)s_%(class)ss",
-        blank=False,
+        related_name="posts",
+        blank=True,
         on_delete=models.SET_NULL,
         null=True, verbose_name='Местоположение')
     category = models.ForeignKey(
         Category,
-        related_name="%(app_label)s_%(class)s_related",
-        related_query_name="%(app_label)s_%(class)ss",
+        related_name="posts",
         on_delete=models.SET_NULL,
         null=True, verbose_name='Категория')
 
     class Meta:
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
-        get_latest_by = "order_date"
+        ordering = ["pub_date"]
 
     def __str__(self):
         return self.title
